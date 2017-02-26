@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>数据收发测试</title>
+    <link href="stylesheets/bootstrap.min.css" rel="stylesheet">
+    <!-- jQuery文件,务必在bootstrap.min.js 之前引入 -->
+    <script src="javascripts/jquery-1.11.1.min.js"></script>
+    <script src="javascripts/bootstrap.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <style>
+    body{
+        padding-top: 10px;
+
+     }
+     .left-nav{
+         height: 760px;
+         background-color: #ddd;
+         padding: 0;
+        }
+    .alert-info{
+        padding: 10px;
+    }
+
+    #leftnav{
+        margin-top: 20px;
+    }
+    h2{
+        margin: 20px 0;
+    }
+     .rightnav button{
+         margin-bottom: 10px;
+     }
+    </style>
+    
+<script type="text/javascript">
+     
+     //清除数据 
+     $(function(){
+         $('button').click(function(){
+        $('li').remove();
+        });
+    });
+
+      var socket = io();
+      var row = 0;
+
+      socket.on('originMsgs', function(msg){
+        $('#sourceData').append($('<li>').text(msg));
+      });
+      socket.on('structMsg', function(msg){
+          msg = JSON.parse(msg);
+
+          $('#resolveDta').append('<tr><td></td><td></td><td></td><td></td><td></td>' +
+                  '<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>' +
+                  '</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>');
+          row = row + 1;
+          for(var i = 0;i < msg.data.length; i++) {
+            $("table tr").eq(row).find("td").eq(i).html(msg.data[i]);
+          }
+      });
+   
+</script>
+    
+
+</head>
+<body>
+ <div class="panel panel-info">
+  <div class="panel-heading">原始数据</div>
+  <div class="panel-body">
+    <ul class="list-group" id="sourceData">
+
+    </ul>
+    <button class="btn btn-default">清除数据</button>
+  </div>
+</div>
+
+<table class="table table-striped" id="resolveDta">
+    <tr>
+        <th>SIM号</th>
+        <th>流水号</th>
+        <th>年月日</th>
+        <th>时分秒</th>
+        <th>湿度</th>
+        <th>温度</th>
+        <th>Ua</th>
+        <th>Ub</th>
+        <th>Uc</th>
+        <th>Ia</th>
+        <th>Ib</th>
+        <th>Ic</th>
+        <th>Pa</th>
+        <th>Pb</th>
+        <th>Pc</th>
+        <th>有功功率</th>
+        <th>无功送率</th>
+        <th>功率因数</th>
+        <th>交流电频率</th>
+        <th>电流倍率</th>
+        <th>输出</th>
+    </tr>
+    
+</table>
+
+
+</body>
+</html>
